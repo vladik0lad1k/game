@@ -47,7 +47,7 @@ class Board:
 
     def render(self):
         self.sprites = pygame.sprite.Group()
-        for i in objects:
+        for i in self.objects:
             self.sprites.add(i)
         self.sprites.draw(self.screen)
 
@@ -85,7 +85,6 @@ class Board:
         elif keys[pygame.K_DOWN]:
             self.objects[0].new_move(0, self.objects[0].speed)
 
-
     def shoot(self):
         self.objects[0].shoot()
 
@@ -94,7 +93,8 @@ class Board:
 
     def remove(self, obj):
         # index = self.objects.index(obj)
-        self.objects.remove(obj)
+        if obj in self.objects:
+            self.objects.remove(obj)
 
 
 class Position:
@@ -176,12 +176,26 @@ class Tank(pygame.sprite.Sprite):
 
         if (xm ** 2 + ym ** 2) ** 0.5 < 45:
             pygame.quit()
-        # if xm > ym:
-        #     self.new_move(0, self.speed * (1 if x > 0 else -1))
-        # elif xm < ym:
-        #     self.new_move(self.speed * (1 if y > 0 else -1), 0)
-        if xm < self.width // 2 or ym < self.height // 2:
-            self.shoot()
+
+        if xm < 10 or ym < 10:
+            if xm < 10:
+                self.new_move(0, self.speed * (1 if y > 0 else -1))
+            if ym < 10:
+                self.new_move(self.speed * (1 if x > 0 else -1), 0)
+            if xm < self.width // 2 or ym < self.height // 2:
+                self.shoot()
+        else:
+            if xm >= ym:
+                self.new_move(0, self.speed * (1 if y > 0 else -1))
+            elif xm < ym:
+                self.new_move(self.speed * (1 if x > 0 else -1), 0)
+        objects = self.board.objects
+        for i in objects:
+            if not hasattr(i, 'is_enemy'):
+                xi = abs(self.pos.x - i.pos.x)
+                yi = abs(self.pos.y - i.pos.y)
+                if (xi ** 2 + yi ** 2) ** 0.5 < 100:
+                    self.shoot()
 
     def shoot(self):
         if self.shoot_ready < self.time_to_shoot:
@@ -251,6 +265,8 @@ class Bullet(pygame.sprite.Sprite):
 
         objects = self.board.objects
         for i in objects:
+            if not hasattr(i, 'is_enemy'):
+                continue
             if self.is_enemy != i.is_enemy:
                 x = abs(self.pos.x - i.pos.x)
                 y = abs(self.pos.y - i.pos.y)
@@ -265,16 +281,78 @@ class Bullet(pygame.sprite.Sprite):
         self.board.remove(self)
 
 
+class Wall(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.width = 50
+        self.height = 50
+        self.image_origin = load_image("wall.jpg")
+        self.image = self.image_origin
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0] - self.width // 2
+        self.rect.y = pos[1] - self.height // 2
+
+        self.pos = Position(pos)
+
+    def set_board(self, board):
+        self.board = board
+
+    def set_pos_x(self, x):
+        self.pos.set_x(x)
+        self.rect.x = x - self.width // 2
+
+    def set_pos_y(self, y):
+        self.pos.set_y(y)
+        self.rect.y = y - self.height // 2
+
+    def auto_action(self):
+        objects = self.board.objects
+        for i in objects:
+            if i is self:
+                continue
+            x = abs(self.pos.x - i.pos.x)
+            y = abs(self.pos.y - i.pos.y)
+            if (x ** 2 + y ** 2) ** 0.5 < 25:
+                print(x, y)
+                i.die()
+                self.die()
+                break
+
+    def die(self):
+        self.board.remove(self)
 
 
+def start_level_1():
+    objects = []
+    objects.append(Tank((50, 620), is_enemy=False))
+    objects.append(Tank((620, 50)))
+
+    objects.append(Wall((150, 0)))
+    objects.append(Wall((150, 50)))
+    objects.append(Wall((150, 100)))
+    objects.append(Wall((150, 150)))
+    objects.append(Wall((150, 200)))
+    objects.append(Wall((150, 250)))
+    objects.append(Wall((150, 300)))
+    objects.append(Wall((200, 300)))
+    objects.append(Wall((250, 300)))
+    objects.append(Wall((300, 300)))
+    objects.append(Wall((350, 300)))
+
+    objects.append(Wall((450, 675)))
+    objects.append(Wall((450, 625)))
+    objects.append(Wall((450, 575)))
+    objects.append(Wall((450, 525)))
+    objects.append(Wall((450, 475)))
+
+    objects.append(Wall((200, 550)))
+    objects.append(Wall((250, 550)))
+    objects.append(Wall((200, 600)))
+    objects.append(Wall((200, 500)))
+
+    board = Board(700, 700)
+    board.set_objects(objects)
+    board.run()
 
 
-
-objects = []
-objects.append(Tank((50, 50), is_enemy=False))
-objects.append(Tank((100, 100)))
-objects.append(Tank((300, 570)))
-
-board = Board(700, 700)
-board.set_objects(objects)
-board.run()
+start_level_1()
