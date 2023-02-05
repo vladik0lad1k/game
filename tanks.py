@@ -1,9 +1,8 @@
-import random
-
 import pygame
 import os
 import sys
-import random
+import PyQt5
+from PyQt5.QtWidgets import QMessageBox
 
 
 def load_image(name, colorkey=None):
@@ -38,6 +37,8 @@ class Board:
             self.screen.fill((0, 0, 0))
             self.render()
             pygame.display.flip()
+        pygame.display.quit()
+        self.form.end()
 
     def set_objects(self, objects):
         self.objects = objects
@@ -67,6 +68,9 @@ class Board:
 
     def on_click(self, cell):
         v = 0
+
+    def set_form(self, form):
+        self.form = form
 
     def add_object(self, obj):
         self.objects.append(obj)
@@ -176,6 +180,7 @@ class Tank(pygame.sprite.Sprite):
 
         if (xm ** 2 + ym ** 2) ** 0.5 < 45:
             pygame.quit()
+            # return
 
         if xm < 10 or ym < 10:
             if xm < 10:
@@ -208,6 +213,9 @@ class Tank(pygame.sprite.Sprite):
         self.shoot_ready += 1
 
     def die(self):
+        char = self.board.get_char()
+        if self is char:
+            self.board.running = False
         self.board.remove(self)
 
     def change_direction(self):
@@ -313,7 +321,6 @@ class Wall(pygame.sprite.Sprite):
             x = abs(self.pos.x - i.pos.x)
             y = abs(self.pos.y - i.pos.y)
             if (x ** 2 + y ** 2) ** 0.5 < 25:
-                print(x, y)
                 i.die()
                 self.die()
                 break
@@ -322,7 +329,7 @@ class Wall(pygame.sprite.Sprite):
         self.board.remove(self)
 
 
-def start_level_1():
+def start_level_1(form):
     objects = []
     objects.append(Tank((50, 620), is_enemy=False))
     objects.append(Tank((620, 50)))
@@ -352,7 +359,7 @@ def start_level_1():
 
     board = Board(700, 700)
     board.set_objects(objects)
+    board.set_form(form)
     board.run()
 
-
-start_level_1()
+# start_level_1()
