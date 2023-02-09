@@ -373,5 +373,38 @@ def start_level_1(form):
     board.set_form(form)
     return board.run()
 
+def start_level_2(form):
+    objects = []
+    objects.append(Tank((50, 620), is_enemy=False))
+    objects.append(Tank((620, 50)))
+
+    objects.append(Wall((150, 0)))
+    objects.append(Wall((150, 50)))
+    objects.append(Wall((150, 100)))
+    objects.append(Wall((150, 150)))
+    objects.append(Wall((150, 200)))
+    objects.append(Wall((150, 250)))
+    objects.append(Wall((150, 300)))
+    objects.append(Wall((200, 300)))
+    objects.append(Wall((250, 300)))
+    objects.append(Wall((300, 300)))
+    objects.append(Wall((350, 300)))
+
+    objects.append(Wall((450, 675)))
+    objects.append(Wall((450, 625)))
+    objects.append(Wall((450, 575)))
+    objects.append(Wall((450, 525)))
+    objects.append(Wall((450, 475)))
+
+    objects.append(Wall((200, 550)))
+    objects.append(Wall((250, 550)))
+    objects.append(Wall((200, 600)))
+    objects.append(Wall((200, 500)))
+
+    board = Board(700, 700)
+    board.set_objects(objects)
+    board.set_form(form)
+    return board.run()
+
 pygame.init()
-# start_level_1()
+

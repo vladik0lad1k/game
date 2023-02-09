@@ -8,6 +8,7 @@ import tanks
 class MainMenu(QWidget):
     def __init__(self):
         super().__init__()
+        self.levels_access = {}
         self.initUI()
 
     def initUI(self):
@@ -28,7 +29,7 @@ class MainMenu(QWidget):
         self.show()
 
     def start(self):
-        self.level_menu = LevelMenu()
+        self.level_menu = LevelMenu(self)
         self.level_menu.show()
 
     def exit(self):
@@ -45,8 +46,9 @@ class MainMenu(QWidget):
 
 
 class LevelMenu(QWidget):
-    def __init__(self):
+    def __init__(self, main_menu):
         super().__init__()
+        self.main_menu = main_menu
         self.initUI()
 
     def initUI(self):
@@ -59,6 +61,12 @@ class LevelMenu(QWidget):
         self.btn_level_1.move(100, 100)
         self.btn_level_1.clicked.connect(self.run_level_1)
 
+        self.btn_level_2 = QPushButton('Уровень 2', self)
+        self.btn_level_2.resize(100, 100)
+        self.btn_level_2.move(200, 100)
+        self.btn_level_2.clicked.connect(self.run_level_2)
+        self.btn_level_2.setDisabled(not self.main_menu.levels_access[1] if 1 in self.main_menu.levels_access else True)
+
         self.btn_exit = QPushButton('Выйти', self)
         self.btn_exit.resize(100, 100)
         self.btn_exit.move(100, 200)
@@ -69,6 +77,22 @@ class LevelMenu(QWidget):
 
     def run_level_1(self):
         res = tanks.start_level_1(self)
+        if res:
+            self.main_menu.levels_access[1] = True
+            self.btn_level_2.setDisabled(False)
+        msgBox = QMessageBox()
+        msgBox.setText("Вы пебедили" if res else 'Вы проиграли')
+        msgBox.exec()
+
+    def run_level_2(self):
+        if 1 not in self.main_menu.levels_access or not self.main_menu.levels_access[1]:
+            msgBox = QMessageBox()
+            msgBox.setText('Сначала пройдите 1 уровень')
+            msgBox.exec()
+            return
+        res = tanks.start_level_2(self)
+        if res:
+            self.main_menu.levels_access[2] = True
         msgBox = QMessageBox()
         msgBox.setText("Вы пебедили" if res else 'Вы проиграли')
         msgBox.exec()
