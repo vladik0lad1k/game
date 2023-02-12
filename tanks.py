@@ -26,6 +26,7 @@ class Board:
     def run(self):
         self.running = True
         self.is_win = False
+        self.is_pause = False
         while self.running:
             self.time += self.clock.tick()
             for event in pygame.event.get():
@@ -34,7 +35,16 @@ class Board:
                     self.running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     v = 0
-            self.actions()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.is_pause = not self.is_pause
+                        if self.is_pause:
+                            self.pause = Pause((350, 350))
+                            self.add_object(self.pause)
+                        else:
+                            self.pause.die()
+            if not self.is_pause:
+                self.actions()
             self.screen.fill((0, 0, 0))
             self.render()
             pygame.display.flip()
@@ -301,11 +311,15 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class Wall(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, is_strong=False):
         super().__init__()
         self.width = 50
         self.height = 50
-        self.image_origin = load_image("wall.jpg")
+        self.is_strong = is_strong
+        if self.is_strong:
+            self.image_origin = load_image("wall_chb.jpg")
+        else:
+            self.image_origin = load_image("wall.jpg")
         self.image = self.image_origin
         self.rect = self.image.get_rect()
         self.rect.x = pos[0] - self.width // 2
@@ -337,6 +351,35 @@ class Wall(pygame.sprite.Sprite):
                 break
 
     def die(self):
+        if not self.is_strong:
+            self.board.remove(self)
+
+
+class Pause(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.width = 170
+        self.height = 60
+        self.image_origin = load_image("pause.png")
+        self.image = self.image_origin
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0] - self.width // 2
+        self.rect.y = pos[1] - self.height // 2
+
+        self.pos = Position(pos)
+
+    def set_board(self, board):
+        self.board = board
+
+    def set_pos_x(self, x):
+        self.pos.set_x(x)
+        self.rect.x = x - self.width // 2
+
+    def set_pos_y(self, y):
+        self.pos.set_y(y)
+        self.rect.y = y - self.height // 2
+
+    def die(self):
         self.board.remove(self)
 
 
@@ -345,14 +388,14 @@ def start_level_1(form):
     objects.append(Tank((50, 620), is_enemy=False))
     objects.append(Tank((620, 50)))
 
-    objects.append(Wall((150, 0)))
+    objects.append(Wall((150, 0), is_strong=True))
     objects.append(Wall((150, 50)))
-    objects.append(Wall((150, 100)))
+    objects.append(Wall((150, 100), is_strong=True))
     objects.append(Wall((150, 150)))
-    objects.append(Wall((150, 200)))
-    objects.append(Wall((150, 250)))
-    objects.append(Wall((150, 300)))
-    objects.append(Wall((200, 300)))
+    objects.append(Wall((150, 200), is_strong=True))
+    objects.append(Wall((150, 250), is_strong=True))
+    objects.append(Wall((150, 300), is_strong=True))
+    objects.append(Wall((200, 300), is_strong=True))
     objects.append(Wall((250, 300)))
     objects.append(Wall((300, 300)))
     objects.append(Wall((350, 300)))
@@ -372,6 +415,7 @@ def start_level_1(form):
     board.set_objects(objects)
     board.set_form(form)
     return board.run()
+
 
 def start_level_2(form):
     objects = []
@@ -406,5 +450,23 @@ def start_level_2(form):
     board.set_form(form)
     return board.run()
 
-pygame.init()
 
+def start_level_3(form):
+    objects = []
+    objects.append(Tank((50, 620), is_enemy=False))
+    objects.append(Tank((620, 50)))
+    objects.append(Tank((120, 50)))
+
+    objects.append(Wall((150, 0)))
+    objects.append(Wall((150, 50)))
+    objects.append(Wall((150, 100)))
+    objects.append(Wall((150, 150)))
+    objects.append(Wall((150, 200)))
+
+    board = Board(700, 700)
+    board.set_objects(objects)
+    board.set_form(form)
+    return board.run()
+
+
+pygame.init()

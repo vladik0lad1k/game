@@ -58,7 +58,7 @@ class LevelMenu(QWidget):
 
         self.btn_level_1 = QPushButton('Уровень 1', self)
         self.btn_level_1.resize(100, 100)
-        self.btn_level_1.move(100, 100)
+        self.btn_level_1.move(300, 300)
         self.btn_level_1.clicked.connect(self.run_level_1)
 
         self.btn_level_2 = QPushButton('Уровень 2', self)
@@ -66,6 +66,12 @@ class LevelMenu(QWidget):
         self.btn_level_2.move(200, 100)
         self.btn_level_2.clicked.connect(self.run_level_2)
         self.btn_level_2.setDisabled(not self.main_menu.levels_access[1] if 1 in self.main_menu.levels_access else True)
+
+        self.btn_level_3 = QPushButton('Уровень 3', self)
+        self.btn_level_3.resize(100, 100)
+        self.btn_level_3.move(100, 100)
+        self.btn_level_3.clicked.connect(self.run_level_3)
+        self.btn_level_3.setDisabled(not self.main_menu.levels_access[2] if 2 in self.main_menu.levels_access else False)
 
         self.btn_exit = QPushButton('Выйти', self)
         self.btn_exit.resize(100, 100)
@@ -93,13 +99,24 @@ class LevelMenu(QWidget):
         res = tanks.start_level_2(self)
         if res:
             self.main_menu.levels_access[2] = True
+            self.btn_level_3.setDisabled(False)
         msgBox = QMessageBox()
         msgBox.setText("Вы пебедили" if res else 'Вы проиграли')
         msgBox.exec()
 
-    def end(self):
-        t = LevelMenu()
-        t.show()
+    def run_level_3(self):
+        # if 2 not in self.main_menu.levels_access or not self.main_menu.levels_access[2]:
+        #     msgBox = QMessageBox()
+        #     msgBox.setText('Сначала пройдите 2 уровень')
+        #     msgBox.exec()
+        #     return
+        res = tanks.start_level_3(self)
+        if res:
+            self.main_menu.levels_access[3] = True
+        msgBox = QMessageBox()
+        msgBox.setText("Вы пебедили" if res else 'Вы проиграли')
+        msgBox.exec()
+
 
     def show_background(self):
         self.label = QLabel(self)
