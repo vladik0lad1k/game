@@ -388,40 +388,6 @@ def start_level_1(form):
     objects.append(Tank((50, 620), is_enemy=False))
     objects.append(Tank((620, 50)))
 
-    objects.append(Wall((150, 0), is_strong=True))
-    objects.append(Wall((150, 50)))
-    objects.append(Wall((150, 100), is_strong=True))
-    objects.append(Wall((150, 150)))
-    objects.append(Wall((150, 200), is_strong=True))
-    objects.append(Wall((150, 250), is_strong=True))
-    objects.append(Wall((150, 300), is_strong=True))
-    objects.append(Wall((200, 300), is_strong=True))
-    objects.append(Wall((250, 300)))
-    objects.append(Wall((300, 300)))
-    objects.append(Wall((350, 300)))
-
-    objects.append(Wall((450, 675)))
-    objects.append(Wall((450, 625)))
-    objects.append(Wall((450, 575)))
-    objects.append(Wall((450, 525)))
-    objects.append(Wall((450, 475)))
-
-    objects.append(Wall((200, 550)))
-    objects.append(Wall((250, 550)))
-    objects.append(Wall((200, 600)))
-    objects.append(Wall((200, 500)))
-
-    board = Board(700, 700)
-    board.set_objects(objects)
-    board.set_form(form)
-    return board.run()
-
-
-def start_level_2(form):
-    objects = []
-    objects.append(Tank((50, 620), is_enemy=False))
-    objects.append(Tank((620, 50)))
-
     objects.append(Wall((150, 0)))
     objects.append(Wall((150, 50)))
     objects.append(Wall((150, 100)))
@@ -440,10 +406,34 @@ def start_level_2(form):
     objects.append(Wall((450, 525)))
     objects.append(Wall((450, 475)))
 
-    objects.append(Wall((200, 550)))
-    objects.append(Wall((250, 550)))
-    objects.append(Wall((200, 600)))
-    objects.append(Wall((200, 500)))
+    objects.append(Wall((375, 410)))
+    objects.append(Wall((425, 410)))
+    objects.append(Wall((375, 460)))
+    objects.append(Wall((375, 360)))
+    objects.append(Wall((325, 410)))
+
+    objects.append(Wall((200, 550), is_strong=True))
+    objects.append(Wall((250, 550), is_strong=True))
+    objects.append(Wall((200, 600), is_strong=True))
+    objects.append(Wall((200, 500), is_strong=True))
+    objects.append(Wall((150, 550), is_strong=True))
+
+    board = Board(700, 700)
+    board.set_objects(objects)
+    board.set_form(form)
+    return board.run()
+
+
+def start_level_2(form):
+    objects = []
+    objects.append(Tank((50, 620), is_enemy=False))
+    objects.append(Tank((620, 50)))
+
+    objects.append(Wall((350, 350), is_strong=True))
+    objects.append(Wall((350, 400), is_strong=True))
+    objects.append(Wall((400, 350), is_strong=True))
+    objects.append(Wall((350, 300), is_strong=True))
+    objects.append(Wall((300, 350), is_strong=True))
 
     board = Board(700, 700)
     board.set_objects(objects)
@@ -455,13 +445,99 @@ def start_level_3(form):
     objects = []
     objects.append(Tank((50, 620), is_enemy=False))
     objects.append(Tank((620, 50)))
+    objects.append(Tank((350, 50)))
+
+    objects.append(Wall((50, 50)))
+    objects.append(Wall((100, 100)))
+    objects.append(Wall((150, 150)))
+    objects.append(Wall((200, 200)))
+    objects.append(Wall((250, 250)))
+    objects.append(Wall((300, 250), is_strong=True))
+    objects.append(Wall((300, 300)))
+    objects.append(Wall((350, 300), is_strong=True))
+    objects.append(Wall((350, 350)))
+    objects.append(Wall((400, 350), is_strong=True))
+    objects.append(Wall((350, 350)))
+    objects.append(Wall((400, 400)))
+    objects.append(Wall((450, 450)))
+    objects.append(Wall((500, 500)))
+    objects.append(Wall((550, 550)))
+    objects.append(Wall((600, 600)))
+    objects.append(Wall((650, 650)))
+
+    board = Board(700, 700)
+    board.set_objects(objects)
+    board.set_form(form)
+    return board.run()
+
+def start_level_4(form):
+    objects = []
+    objects.append(Tank((50, 620), is_enemy=False))
+    objects.append(Tank((620, 50)))
     objects.append(Tank((120, 50)))
 
-    objects.append(Wall((150, 0)))
-    objects.append(Wall((150, 50)))
-    objects.append(Wall((150, 100)))
-    objects.append(Wall((150, 150)))
-    objects.append(Wall((150, 200)))
+    objects.append(Wall((250, 0)))
+    objects.append(Wall((250, 50)))
+    objects.append(Wall((250, 100)))
+    objects.append(Wall((250, 150)))
+    objects.append(Wall((250, 200)))
+    objects.append(Wall((250, 250)))
+    objects.append(Wall((250, 300)))
+    objects.append(Wall((200, 300)))
+    objects.append(Wall((150, 300)))
+    objects.append(Wall((100, 300)))
+    objects.append(Wall((50, 300)))
+    objects.append(Wall((0, 300)))
+    objects.append(Wall((250, 350)))
+    objects.append(Wall((250, 400)))
+    objects.append(Wall((250, 450)))
+    objects.append(Wall((300, 450)))
+    objects.append(Wall((350, 450)))
+    objects.append(Wall((400, 450)))
+    objects.append(Wall((400, 500)))
+    objects.append(Wall((400, 550)))
+    objects.append(Wall((450, 550)))
+    objects.append(Wall((500, 550)))
+    objects.append(Wall((550, 550)))
+    objects.append(Wall((600, 550)))
+    objects.append(Wall((650, 550)))
+    objects.append(Wall((700, 550)))
+    objects.append(Wall((400, 600)))
+    objects.append(Wall((400, 650)))
+    objects.append(Wall((400, 700)))
+
+
+    board = Board(700, 700)
+    board.set_objects(objects)
+    board.set_form(form)
+    return board.run()
+
+def start_level_5(form):
+    objects = []
+    objects.append(Tank((350, 550), is_enemy=False))
+    objects.append(Tank((50, 650)))
+    objects.append(Tank((600, 65)))
+    objects.append(Tank((600, 650)))
+
+    objects.append(Wall((350, 200)))
+    objects.append(Wall((350, 250), is_strong=True))
+    objects.append(Wall((400, 250)))
+    objects.append(Wall((300, 250)))
+    objects.append(Wall((350, 300)))
+
+    objects.append(Wall((500, 400)))
+    objects.append(Wall((500, 450), is_strong=True))
+    objects.append(Wall((550, 450)))
+    objects.append(Wall((450, 450)))
+    objects.append(Wall((500, 500)))
+
+    objects.append(Wall((225, 400)))
+    objects.append(Wall((225, 450), is_strong=True))
+    objects.append(Wall((275, 450)))
+    objects.append(Wall((175, 450)))
+    objects.append(Wall((225, 500)))
+
+
 
     board = Board(700, 700)
     board.set_objects(objects)
