@@ -1,8 +1,6 @@
 import pygame
 import os
 import sys
-import PyQt5
-from PyQt5.QtWidgets import QMessageBox
 
 
 def load_image(name, colorkey=None):
@@ -87,9 +85,6 @@ class Board:
             if hasattr(i, 'auto_action'):
                 i.auto_action()
 
-    def on_click(self, cell):
-        v = 0
-
     def set_form(self, form):
         self.form = form
 
@@ -117,7 +112,6 @@ class Board:
         return self.objects[0]
 
     def remove(self, obj):
-        # index = self.objects.index(obj)
         if obj in self.objects:
             self.objects.remove(obj)
 
@@ -201,7 +195,6 @@ class Tank(pygame.sprite.Sprite):
 
         if (xm ** 2 + ym ** 2) ** 0.5 < 45:
             self.board.running = False
-            # return
 
         if xm < 10 or ym < 10:
             if xm < 10:

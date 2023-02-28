@@ -1,7 +1,5 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QMessageBox
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QImage, QPalette, QBrush, QPixmap
 import tanks
 
 
